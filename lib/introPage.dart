@@ -101,7 +101,7 @@ class _MyAppState extends State<MyApp> {
                 children: [
                   InkWell(
                       onTap: (){
-
+                        launchRocket("rocket_1_About");
                         // final response = await http.get(Uri.parse(
                         //   "http://192.168.1.18:8000/",
                         // ));
@@ -109,9 +109,6 @@ class _MyAppState extends State<MyApp> {
                         // bool rocket1 = data['rocket_1_About'];
                         // print(rocket1);
                         setState(() {
-                          final response = http.get(Uri.parse(
-                            "http://192.168.1.18:8000/rocket_1_About/1/",
-                          ));
                           redButtonSts = true;
                         });
 
@@ -120,6 +117,7 @@ class _MyAppState extends State<MyApp> {
                       child: RocketContainer(height: height, width: width,img: "images/rocket.png",)),
                   InkWell(
                       onTap: (){
+                        launchRocket("rocket_2_About");
                         setState(() {
                           yellowButtonSts =true;
                         });
@@ -127,6 +125,7 @@ class _MyAppState extends State<MyApp> {
                       child: RocketContainer(height: height, width: width,img: "images/rocket1.png",)),
                   InkWell(
                       onTap: (){
+                        launchRocket("rocket_3_About");
                         setState(() {
                           greenButtonSts =true;
                         });
@@ -135,6 +134,7 @@ class _MyAppState extends State<MyApp> {
                       child: RocketContainer(height: height, width: width,img: "images/rocket2.png",)),
                   InkWell(
                       onTap: (){
+                        launchRocket("rocket_4_About");
                         setState(() {
                           purpleButtonSts = true;
                         });
@@ -284,4 +284,7 @@ class RocketContainer extends StatelessWidget {
       ),
     );
   }
+}
+launchRocket(String a) async {
+  await http.get(Uri.parse("http://192.168.1.18:8000/$a/1/"));
 }
