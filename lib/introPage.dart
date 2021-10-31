@@ -1,6 +1,11 @@
+import 'dart:convert';
+import 'dart:core';
+
 import 'package:crackers/launchScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
+import 'package:http/http.dart' as http;
 
 
 
@@ -12,6 +17,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  bool redButtonSts,yellowButtonSts,greenButtonSts ,purpleButtonSts =false;
+  bool rocket1,rocket2,rocket3,rocket4 = false;
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -38,7 +45,7 @@ class _MyAppState extends State<MyApp> {
       ),
       child: Scaffold(
         body: Container(
-          padding: EdgeInsets.symmetric(vertical: height*0.10,horizontal: width*0.070),
+          padding: EdgeInsets.symmetric(vertical: height*0.05,horizontal: width*0.070),
           height: height*1.0,
           width: width*1.0,
           decoration: BoxDecoration(
@@ -63,31 +70,7 @@ class _MyAppState extends State<MyApp> {
                 ),
               ),
               SizedBox(
-                height: height*0.020,
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(" Instruction: ",
-                    style: GoogleFonts.roboto(
-                      color: Color.fromRGBO(255, 255, 255, 1.0),
-                      fontWeight: FontWeight.bold,
-                      fontSize: height*0.016,
-                    ),
-                  ),
-                  Text("  Designed with performance in mind—Framer is \n  cross-platform and gives you a fast and stable ",
-                    style: GoogleFonts.roboto(
-                      color: Color.fromRGBO(255, 255, 255, 1.0),
-                      fontWeight: FontWeight.bold,
-                      fontSize: height*0.011,
-                    ),
-                  ),
-
-                ],
-              ),
-              SizedBox(
-                height: height*0.15,
+                height: height*0.035,
               ),
               Center(
                 child: Text(" Ready to launch ",
@@ -97,13 +80,66 @@ class _MyAppState extends State<MyApp> {
                   ),
                 ),
               ),
+              Container(
+                height: height*0.5,
+                width: width*0.8,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+
+                    (redButtonSts == true) ? buildAnimContainerRed(context, width): Expanded(child: Text(" "),),
+                    (yellowButtonSts == true) ? buildAnimContainerGYellow(context, width): Expanded(child: Text(" "),),
+                    (greenButtonSts == true) ? buildAnimContainerGreen(context, width): Expanded(child: Text(" "),),
+                    (purpleButtonSts == true) ? buildAnimContainerPurple(context,width): Expanded(child: Text(" "),),
+
+                    ],
+                ),
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  RocketContainer(height: height, width: width,img: "images/rocket.png",),
-                  RocketContainer(height: height, width: width,img: "images/rocket1.png",),
-                  RocketContainer(height: height, width: width,img: "images/rocket2.png",),
-                  RocketContainer(height: height, width: width,img: "images/rocket3.png",)
+                  InkWell(
+                      onTap: (){
+
+                        // final response = await http.get(Uri.parse(
+                        //   "http://192.168.1.18:8000/",
+                        // ));
+                        // var data = jsonDecode(response.body);
+                        // bool rocket1 = data['rocket_1_About'];
+                        // print(rocket1);
+                        setState(() {
+                          final response = http.get(Uri.parse(
+                            "http://192.168.1.18:8000/rocket_1_About/1/",
+                          ));
+                          redButtonSts = true;
+                        });
+
+                        print("redstate $redButtonSts");
+                      },
+                      child: RocketContainer(height: height, width: width,img: "images/rocket.png",)),
+                  InkWell(
+                      onTap: (){
+                        setState(() {
+                          yellowButtonSts =true;
+                        });
+                      },
+                      child: RocketContainer(height: height, width: width,img: "images/rocket1.png",)),
+                  InkWell(
+                      onTap: (){
+                        setState(() {
+                          greenButtonSts =true;
+                        });
+
+                      },
+                      child: RocketContainer(height: height, width: width,img: "images/rocket2.png",)),
+                  InkWell(
+                      onTap: (){
+                        setState(() {
+                          purpleButtonSts = true;
+                        });
+                      },
+                      child: RocketContainer(height: height, width: width,img: "images/rocket3.png",))
                 ],
               ),
               SizedBox(
@@ -137,7 +173,89 @@ class _MyAppState extends State<MyApp> {
       ),
     );
   }
+
+  Expanded buildAnimContainerPurple(BuildContext context, double width) {
+    return Expanded(
+                  child: Lottie.asset(
+                    'images/purple_blast.json',
+                    height: MediaQuery.of(context).size.height * 0.4,
+                    fit: BoxFit.fill,
+                    //alignment: Alignment.center,
+                    width: width*1.0,
+                    repeat: false,
+                    animate: true,
+                  ),
+                );
+  }
+
+  Expanded buildAnimContainerGreen(BuildContext context, double width) {
+    return Expanded(
+                  child: Lottie.asset(
+                    'images/green_blast.json',
+                    height: MediaQuery.of(context).size.height * 0.4,
+                    fit: BoxFit.fill,
+                    alignment: Alignment.center,
+                    width: width*1.0,
+                    repeat: false,
+                    animate: true,
+                  ),
+                );
+  }
+
+  Expanded buildAnimContainerGYellow(BuildContext context, double width) {
+    return Expanded(
+                  child: Lottie.asset(
+                    'images/yellow_blast.json',
+                    height: MediaQuery.of(context).size.height * 0.4,
+                    fit: BoxFit.fill,
+                    alignment: Alignment.center,
+                    width: width*1.0,
+                    repeat: false,
+                    animate: true,
+                  ),
+                );
+  }
+
+  Expanded buildAnimContainerRed(BuildContext context, double width) {
+    return Expanded(
+            child: Lottie.asset(
+              'images/red_blast.json',
+              height: MediaQuery.of(context).size.height * 0.4,
+              fit: BoxFit.fill,
+              alignment: Alignment.center,
+              width: width*1.0,
+              repeat: false,
+              animate: true,
+            ),
+           );
+  }
 }
+
+// class AnimContainerRed extends StatelessWidget {
+//   const AnimContainerRed({
+//     Key key,
+//     @required this.width,
+//     @required this.img,
+//   }) : super(key: key);
+//
+//   final double width;
+//   final String img;
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Expanded(
+//       child: Lottie.asset(
+//         img,
+//         height: MediaQuery.of(context).size.height * 0.4,
+//         fit: BoxFit.fill,
+//         alignment: Alignment.center,
+//         width: width*1.0,
+//         repeat: true,
+//         animate: true,
+//       ),
+//     );
+//   }
+// }
 
 class RocketContainer extends StatelessWidget {
   const RocketContainer({
@@ -154,7 +272,7 @@ class RocketContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 5.0,vertical: 30.0),
+      margin: EdgeInsets.symmetric(horizontal: 5.0,vertical: 20.0),
       height: height*0.095,
       width: width*0.18,
       decoration: BoxDecoration(
