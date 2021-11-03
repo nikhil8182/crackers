@@ -116,8 +116,8 @@ class _MyAppState extends State<MyApp> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    //buildAnimContainerRed(context, width),
 
+                    //buildAnimContainerRed(context, width),
                     (redButtonSts == true) ? buildAnimContainerRed(context, width): Expanded(child: Text(" "),),
                     //(redButtonSts == false) ? buildAnimContainerRed(context, width): Expanded(child: Text(" "),),
                     (yellowButtonSts == true) ? buildAnimContainerGYellow(context, width): Expanded(child: Text(" "),),
@@ -132,15 +132,9 @@ class _MyAppState extends State<MyApp> {
                 children: [
                   InkWell(
                       onTap: (){
-                        //launchRocket("rocket_1_About");
-
+                        launchRocket("rocket_1_About");
+                        //redButtonSts = false;
                         setState(() {
-                          // while(count<1)
-                          //   {
-                          //     redButtonSts = true;
-                          //     count = 1;
-                          //   }
-                          //   print("$count after");
                           if(redButtonSts == false){
                             redButtonSts = true;
                           }else{
@@ -152,13 +146,12 @@ class _MyAppState extends State<MyApp> {
                         });
                         print("redstate $redButtonSts");
                         //redButtonSts = false;
-                        print("after the $redButtonSts");
                       },
                       child: RocketContainer(height: height, width: width,img: "images/rocket.png",)
                   ),
                   InkWell(
                       onTap: (){
-                        //launchRocket("rocket_2_About");
+                        launchRocket("rocket_2_About");
                         setState(() {
                           if(yellowButtonSts == false){
                             yellowButtonSts =true;
@@ -171,7 +164,7 @@ class _MyAppState extends State<MyApp> {
                       child: RocketContainer(height: height, width: width,img: "images/rocket1.png",)),
                   InkWell(
                       onTap: (){
-                        //launchRocket("rocket_3_About");
+                        launchRocket("rocket_3_About");
                         setState(() {
                           if(greenButtonSts == false){
                             greenButtonSts =true;
@@ -185,7 +178,7 @@ class _MyAppState extends State<MyApp> {
                       child: RocketContainer(height: height, width: width,img: "images/rocket2.png",)),
                   InkWell(
                       onTap: (){
-                        //launchRocket("rocket_4_About");
+                        launchRocket("rocket_4_About");
                         setState(() {
                           if(purpleButtonSts == false){
                             purpleButtonSts =true;
@@ -253,7 +246,7 @@ class _MyAppState extends State<MyApp> {
                     fit: BoxFit.fill,
                     //alignment: Alignment.center,
                     width: width*1.0,
-                    repeat: false,
+                    repeat: true,
                     animate: true,
                   ),
                 );
@@ -267,7 +260,7 @@ class _MyAppState extends State<MyApp> {
                     fit: BoxFit.fill,
                     alignment: Alignment.center,
                     width: width*1.0,
-                    repeat: false,
+                    repeat: true,
                     animate: true,
                   ),
                 );
@@ -281,7 +274,7 @@ class _MyAppState extends State<MyApp> {
                     fit: BoxFit.fill,
                     alignment: Alignment.center,
                     width: width*1.0,
-                    repeat: false,
+                    repeat: true,
                     animate: true,
                   ),
                 );
@@ -295,7 +288,7 @@ class _MyAppState extends State<MyApp> {
               fit: BoxFit.fill,
               alignment: Alignment.center,
               width: width*1.0,
-              repeat: false,
+              repeat: true,
               animate: true,
             ),
            );
@@ -332,5 +325,5 @@ class RocketContainer extends StatelessWidget {
 }
 
 launchRocket(String a) async {
-  await http.get(Uri.parse("http://192.168.1.18:8000/$a/1/"));
+  await http.get(Uri.parse("http://54.202.0.170//$a/1/"));
 }
