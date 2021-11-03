@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:core';
-
 import 'package:crackers/launchScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -17,8 +16,38 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool redButtonSts,yellowButtonSts,greenButtonSts ,purpleButtonSts =false;
-  bool rocket1,rocket2,rocket3,rocket4 = false;
+  bool redButtonSts = false;
+  bool yellowButtonSts =false;
+  bool greenButtonSts =false ;
+  bool purpleButtonSts =false;
+  List data = [];
+  bool rocket1 = false;
+  bool rocket2 = false;
+  bool rocket3 = false;
+  bool rocket4 = false;
+  int count = 0;
+
+
+  launchSts() async {
+    final  res = await http.get(Uri.parse("http://192.168.1.18:8000/"));
+    Map data = json.decode(res.body);
+    setState(() {
+     rocket1 = data['rocket_1_About'];
+     rocket2 = data['rocket_2_About'];
+     rocket3 = data['rocket_3_About'];
+     rocket4 = data['rocket_4_About'];
+    });
+
+   print("**************************** ${data['rocket_1_About']}");
+   print("$rocket1");
+  }
+@override
+  void initState() {
+    // TODO: implement initState
+  launchSts();
+    super.initState();
+  }
+  //bool rocket1,rocket2,rocket3,rocket4 = false;
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -87,8 +116,10 @@ class _MyAppState extends State<MyApp> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
+                    //buildAnimContainerRed(context, width),
 
                     (redButtonSts == true) ? buildAnimContainerRed(context, width): Expanded(child: Text(" "),),
+                    //(redButtonSts == false) ? buildAnimContainerRed(context, width): Expanded(child: Text(" "),),
                     (yellowButtonSts == true) ? buildAnimContainerGYellow(context, width): Expanded(child: Text(" "),),
                     (greenButtonSts == true) ? buildAnimContainerGreen(context, width): Expanded(child: Text(" "),),
                     (purpleButtonSts == true) ? buildAnimContainerPurple(context,width): Expanded(child: Text(" "),),
@@ -101,42 +132,67 @@ class _MyAppState extends State<MyApp> {
                 children: [
                   InkWell(
                       onTap: (){
-                        launchRocket("rocket_1_About");
-                        // final response = await http.get(Uri.parse(
-                        //   "http://192.168.1.18:8000/",
-                        // ));
-                        // var data = jsonDecode(response.body);
-                        // bool rocket1 = data['rocket_1_About'];
-                        // print(rocket1);
-                        setState(() {
-                          redButtonSts = true;
-                        });
+                        //launchRocket("rocket_1_About");
 
+                        setState(() {
+                          // while(count<1)
+                          //   {
+                          //     redButtonSts = true;
+                          //     count = 1;
+                          //   }
+                          //   print("$count after");
+                          if(redButtonSts == false){
+                            redButtonSts = true;
+                          }else{
+                            redButtonSts = false;
+                          }
+                          print("print $redButtonSts");
+                          //redButtonSts = true;
+                          print("redButtonSts $redButtonSts");
+                        });
                         print("redstate $redButtonSts");
+                        //redButtonSts = false;
+                        print("after the $redButtonSts");
                       },
-                      child: RocketContainer(height: height, width: width,img: "images/rocket.png",)),
+                      child: RocketContainer(height: height, width: width,img: "images/rocket.png",)
+                  ),
                   InkWell(
                       onTap: (){
-                        launchRocket("rocket_2_About");
+                        //launchRocket("rocket_2_About");
                         setState(() {
-                          yellowButtonSts =true;
+                          if(yellowButtonSts == false){
+                            yellowButtonSts =true;
+                          }else{
+                            yellowButtonSts = false;
+                          }
+                          print("yellowButtonSts $yellowButtonSts");
                         });
                       },
                       child: RocketContainer(height: height, width: width,img: "images/rocket1.png",)),
                   InkWell(
                       onTap: (){
-                        launchRocket("rocket_3_About");
+                        //launchRocket("rocket_3_About");
                         setState(() {
-                          greenButtonSts =true;
+                          if(greenButtonSts == false){
+                            greenButtonSts =true;
+                          }else{
+                            greenButtonSts = false;
+                          }
+                          print("greenButtonSts $greenButtonSts");
                         });
 
                       },
                       child: RocketContainer(height: height, width: width,img: "images/rocket2.png",)),
                   InkWell(
                       onTap: (){
-                        launchRocket("rocket_4_About");
+                        //launchRocket("rocket_4_About");
                         setState(() {
-                          purpleButtonSts = true;
+                          if(purpleButtonSts == false){
+                            purpleButtonSts =true;
+                          }else{
+                            purpleButtonSts = false;
+                          }
+                          print("purpleButtonSts $purpleButtonSts");
                         });
                       },
                       child: RocketContainer(height: height, width: width,img: "images/rocket3.png",))
@@ -147,6 +203,21 @@ class _MyAppState extends State<MyApp> {
               ),
               GestureDetector(
                 onTap: (){
+                  // launchRocket("rocket_1_About");
+                  //
+                  // Future.delayed(Duration(seconds: 2 ), () {
+                  //   launchRocket("rocket_2_About");
+                  // });
+                  // Future.delayed(Duration(seconds: 3), () {
+                  //   launchRocket("rocket_3_About");
+                  // });
+                  // Future.delayed(Duration(seconds: 3), () {
+                  //   launchRocket("rocket_4_About");
+                  // });
+
+                  // launchRocket("rocket_2_About");
+                  // launchRocket("rocket_3_About");
+                  // launchRocket("rocket_4_About");
                   Navigator.push(context, MaterialPageRoute(builder: (context)=>LaunchScreen()));
                 },
                 child: Container(
@@ -231,32 +302,6 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-// class AnimContainerRed extends StatelessWidget {
-//   const AnimContainerRed({
-//     Key key,
-//     @required this.width,
-//     @required this.img,
-//   }) : super(key: key);
-//
-//   final double width;
-//   final String img;
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Expanded(
-//       child: Lottie.asset(
-//         img,
-//         height: MediaQuery.of(context).size.height * 0.4,
-//         fit: BoxFit.fill,
-//         alignment: Alignment.center,
-//         width: width*1.0,
-//         repeat: true,
-//         animate: true,
-//       ),
-//     );
-//   }
-// }
-
 class RocketContainer extends StatelessWidget {
   const RocketContainer({
     Key key,
@@ -285,6 +330,7 @@ class RocketContainer extends StatelessWidget {
     );
   }
 }
+
 launchRocket(String a) async {
   await http.get(Uri.parse("http://192.168.1.18:8000/$a/1/"));
 }
